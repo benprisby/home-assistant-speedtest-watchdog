@@ -3,7 +3,7 @@ name = "home-assistant-speedtest-watchdog"
 version = "0.0.0"
 description = "Watchdog to reload the Home Assistant Speedtest integration"
 authors = ["Ben Prisby <ben@benprisby.com>"]
-# readme = "README.md"
+readme = "README.md"
 packages = [{include = "watchdog"}]
 
 [tool.poetry.dependencies]
