@@ -1,17 +1,22 @@
 {
-    "mqtt": {
-        "address": "homeassistant.home",
-        "port": 1883,
-        "username": "",
-        "password": ""
+    "connections": {
+        "home_assistant": {
+            "address": "homeassistant.home",
+            "port": 8123,
+            "https": true,
+            "verify_certificate": true,
+            "api_token": ""
+        },
+        "mqtt": {
+            "address": "homeassistant.home",
+            "port": 1883,
+            "username": "",
+            "password": ""
+        }
     },
-    "home_assistant": {
-        "address": "homeassistant.home",
-        "port": 8123,
-        "https": true,
-        "verify_certificate": true,
-        "api_token": "",
-        "entry_id": "",
-        "sensor_name": "speedtest_download"
+    "monitor": {
+        "type": "mqtt",
+        "sensor_name": "speedtest_download",
+        "config_entry_id": ""
     }
 }

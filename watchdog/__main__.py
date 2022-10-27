@@ -6,10 +6,10 @@ import signal
 import sys
 import threading
 import time
-import typing
 
-import watchdog.integration_reloader
-import watchdog.sensor_monitor
+import watchdog.connections
+import watchdog.monitors
+import watchdog.reloader
 
 logger = logging.getLogger(__name__)
 stop_signal = threading.Event()
@@ -46,13 +46,20 @@ def main() -> None:
     except OSError:
         sys.exit(f'Failed to open configuration file: {config_path}')
 
-    home_assistant_config: dict[str, typing.Any] = config['home_assistant']
-
-    reloader = watchdog.integration_reloader.IntegrationReloader(
-        **{key: value for key, value in home_assistant_config.items() if key != 'sensor_name'})
-    monitor = watchdog.sensor_monitor.SensorMonitor(reloader,
-                                                    **{'mqtt_' + key: value for key, value in config['mqtt'].items()},
-                                                    sensor_name=home_assistant_config['sensor_name'])
+    home_assistant_connection = watchdog.connections.HomeAssistantConnection(**config['connections']['home_assistant'])
+    reloader = watchdog.reloader.IntegrationReloader(home_assistant_connection, config['monitor']['config_entry_id'])
+    sensor_name = config['monitor']['sensor_name']
+    monitor_type = config['monitor']['type']
+    monitor: watchdog.monitors.BaseMonitor
+    if monitor_type == 'mqtt':
+        logger.debug('Setting up MQTT monitor')
+        mqtt_connection = watchdog.connections.MqttConnection(**config['connections']['mqtt'])
+        monitor = watchdog.monitors.MqttMonitor(reloader, sensor_name, mqtt_connection)
+    elif monitor_type == 'rest':
+        logger.debug('Setting up REST API monitor')
+        monitor = watchdog.monitors.RestMonitor(reloader, sensor_name, home_assistant_connection)
+    else:
+        sys.exit(f'Unsupported monitor type in configuration file: {monitor_type}')
 
     monitor.run(stop_signal)
 
