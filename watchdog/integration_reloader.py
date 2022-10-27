@@ -17,7 +17,7 @@ class IntegrationReloader:
         self._url = f'{scheme}://{address}:{port}/api/services/homeassistant/reload_config_entry'
         self._headers = {'Authorization': f'Bearer {api_token}'}
         self._payload = {'entry_id': entry_id}
-        self._verify = verify_certificate
+        self._verify_certificate = verify_certificate
 
         logger.debug('Initialized reloader for server at: %s', address)
 
@@ -26,7 +26,7 @@ class IntegrationReloader:
             response = requests.post(self._url,
                                      headers=self._headers,
                                      json=self._payload,
-                                     verify=self._verify,
+                                     verify=self._verify_certificate,
                                      timeout=30)
             response.raise_for_status()
             return True
