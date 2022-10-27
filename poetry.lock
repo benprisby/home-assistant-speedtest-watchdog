@@ -8,10 +8,7 @@ python-versions = ">=3.7.2"
 
 [package.dependencies]
 lazy-object-proxy = ">=1.4.0"
-wrapt = [
-    {version = ">=1.11,<2", markers = "python_version < \"3.11\""},
-    {version = ">=1.14,<2", markers = "python_version >= \"3.11\""},
-]
+wrapt = {version = ">=1.11,<2", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "certifi"
@@ -260,8 +257,8 @@ python-versions = "*"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.10"
-content-hash = "0fd29b1e5f57512ce716cca7b73eac01b3bf6647ec65660e95c0e276e1eb0a0d"
+python-versions = "~3.10"
+content-hash = "397c898a6ad061b15153afe55a4c0eee4531ccb5052f6f62d9889f7ffbceaef9"
 
 [metadata.files]
 astroid = [
