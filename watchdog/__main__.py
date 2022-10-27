@@ -30,7 +30,8 @@ def main() -> None:
                         level=logging.DEBUG)
     logging.Formatter.converter = time.gmtime  # UTC
 
-    parser = argparse.ArgumentParser(description='Reload the Home Assistant Speedtest integration when it dies')
+    parser = argparse.ArgumentParser(prog=__package__,
+                                     description='Reload the Home Assistant Speedtest integration when it dies')
     parser.add_argument('-c', '--config', metavar='<path>', help='Configuration file path', required=True)
     args = parser.parse_args()
 
