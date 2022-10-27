@@ -95,18 +95,18 @@ The file format is a JSON object organized into sections. Each section is a top-
 
 Install the required packages:
 
-```
+```shell
 poetry install
 ```
 
 Run the application:
 
-```
+```shell
 poetry run python -m watchdog <arguments>
 ```
 
 For supported command line arguments, run:
 
-```
+```shell
 poetry run python -m watchdog --help
 ```
