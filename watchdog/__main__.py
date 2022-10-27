@@ -32,18 +32,19 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(prog=__package__,
                                      description='Reload the Home Assistant Speedtest integration when it dies')
-    parser.add_argument('-c', '--config', metavar='<path>', help='Configuration file path', required=True)
+    parser.add_argument('-c', '--config', metavar='<path>', help='Configuration file path')
     args = parser.parse_args()
 
+    config_path = os.path.realpath(args.config) if args.config else os.path.join(os.getcwd(), 'config.json')
     config = {}
     try:
-        with open(args.config, 'r', encoding='utf-8') as config_file:
+        with open(config_path, 'r', encoding='utf-8') as config_file:
             config = json.load(config_file)
-            logger.debug('Loaded configuration file: %s', os.path.realpath(config_file.name))
+            logger.debug('Loaded configuration file: %s', config_path)
     except json.JSONDecodeError:
-        sys.exit('Invalid configuration file format')
+        sys.exit(f'Invalid configuration file format: {config_path}')
     except OSError:
-        sys.exit('Failed to open configuration file')
+        sys.exit(f'Failed to open configuration file: {config_path}')
 
     home_assistant_config: dict[str, typing.Any] = config['home_assistant']
 
