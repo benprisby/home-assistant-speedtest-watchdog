@@ -1,0 +1,17 @@
+{
+    "mqtt": {
+        "address": "",
+        "port": 1883,
+        "username": "",
+        "password": ""
+    },
+    "home_assistant": {
+        "address": "",
+        "port": 8123,
+        "https": true,
+        "verify_certificate": true,
+        "api_token": "",
+        "entry_id": "",
+        "sensor_name": "speedtest_download"
+    }
+}

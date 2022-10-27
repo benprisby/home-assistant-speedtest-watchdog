@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "home-assistant-speedtest-watchdog"
+version = "0.0.0"
+description = "Watchdog to reload the Home Assistant Speedtest integration"
+authors = ["Ben Prisby <ben@benprisby.com>"]
+# readme = "README.md"
+packages = [{include = "watchdog"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+paho-mqtt = "^1.6.1"
+requests = "^2.28.1"
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^2.15.4"
+toml = "^0.10.2"
+yapf = "^0.32.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.yapf]
+based_on_style = "google"
+column_limit = 120
+
+[tool.yapfignore]
+ignore_patterns = [
+  ".venv/**"
+]
