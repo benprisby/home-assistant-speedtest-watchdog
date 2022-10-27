@@ -1,12 +1,12 @@
 {
     "mqtt": {
-        "address": "",
+        "address": "homeassistant.home",
         "port": 1883,
         "username": "",
         "password": ""
     },
     "home_assistant": {
-        "address": "",
+        "address": "homeassistant.home",
         "port": 8123,
         "https": true,
         "verify_certificate": true,
