@@ -15,8 +15,9 @@ logger = logging.getLogger(__name__)
 stop_signal = threading.Event()
 
 
-def signal_handler(signal: int, frame: object) -> None:
-    logger.info('Got signal %d', signal)
+def signal_handler(signal_number: int, frame: object) -> None:
+    del frame  # Unused
+    logger.info('Got signal %d', signal_number)
     stop_signal.set()
 
 

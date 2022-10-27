@@ -16,14 +16,18 @@ class IntegrationReloader:
         scheme = 'https' if https else 'http'
         self._url = f'{scheme}://{address}:{port}/api/services/homeassistant/reload_config_entry'
         self._headers = {'Authorization': f'Bearer {api_token}'}
-        self._payload = {"entry_id": entry_id}
+        self._payload = {'entry_id': entry_id}
         self._verify = verify_certificate
 
         logger.debug('Initialized reloader for server at: %s', address)
 
     def reload(self) -> bool:
         try:
-            response = requests.post(self._url, headers=self._headers, json=self._payload, verify=self._verify)
+            response = requests.post(self._url,
+                                     headers=self._headers,
+                                     json=self._payload,
+                                     verify=self._verify,
+                                     timeout=30)
             response.raise_for_status()
             return True
         except requests.exceptions.HTTPError:
