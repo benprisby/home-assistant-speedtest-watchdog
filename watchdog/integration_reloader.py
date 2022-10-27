@@ -7,12 +7,12 @@ logger = logging.getLogger(__name__)
 class IntegrationReloader:
 
     def __init__(self,
-                 address: str,
-                 port: int,
                  api_token: str,
                  entry_id: str,
+                 address: str,
+                 port: int = 8123,
                  https: bool = True,
-                 verify_certificate: bool = False) -> None:
+                 verify_certificate: bool = True) -> None:
         scheme = 'https' if https else 'http'
         self._url = f'{scheme}://{address}:{port}/api/services/homeassistant/reload_config_entry'
         self._headers = {'Authorization': f'Bearer {api_token}'}
