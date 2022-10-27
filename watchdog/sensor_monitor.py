@@ -70,9 +70,11 @@ class SensorMonitor:
                 logger.debug('Sensor died')
                 if self.reloader.reload():
                     logger.info('Successfully reloaded integration')
-                    self._backoff_timer = threading.Timer(60.0, lambda: None)
+                    logger.debug('Starting backoff timer')
+                    self._backoff_timer = threading.Timer(60.0, lambda: logger.debug('Backoff timer finished'))
                     self._backoff_timer.start()
                 else:
+                    # TODO(BDP): Schedule a retry.
                     logger.warning('Failed to reload integration')
             else:
-                logger.debug('Waiting for backoff timer to complete')
+                logger.debug('Ignoring sensor value because backoff timer is running')
