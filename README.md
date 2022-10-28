@@ -17,6 +17,7 @@
     - [`connections` Section](#connections-section)
     - [`monitor` Section](#monitor-section)
 - [Running](#running)
+- [Development](#development)
 
 ## Overview
 
@@ -157,4 +158,24 @@ For supported command line arguments, run:
 
 ```shell
 poetry run python -m watchdog --help
+```
+
+## Development
+
+Install the required packages:
+
+```shell
+poetry install --with dev
+```
+
+Install the pre-commit hooks:
+
+```shell
+poetry run pre-commit install
+```
+
+If desired, pre-commit hooks can be run manually:
+
+```shell
+poetry run pre-commit run --all-files
 ```
