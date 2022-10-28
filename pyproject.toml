@@ -33,7 +33,8 @@ show_error_codes = true
 namespace_packages = true
 explicit_package_bases = true
 exclude = [
-  ".*\\.venv"
+  ".*\\.venv",
+  "^dist"
 ]
 
 [[tool.mypy.overrides]]
@@ -46,5 +47,6 @@ column_limit = 120
 
 [tool.yapfignore]
 ignore_patterns = [
-  ".venv/**"
+  ".venv/**",
+  "dist/**"
 ]
