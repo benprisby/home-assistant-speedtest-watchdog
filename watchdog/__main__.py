@@ -18,7 +18,7 @@ stop_signal = threading.Event()
 
 def signal_handler(signal_number: int, frame: object) -> None:
     del frame  # Unused
-    logger.info('Got signal %d', signal_number)
+    logger.debug('Got signal %d', signal_number)
     stop_signal.set()
 
 
@@ -26,9 +26,10 @@ def main() -> None:
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
 
-    logging.basicConfig(format='%(asctime)s %(levelname)-8s %(message)s [%(module)s:%(lineno)d]',
-                        datefmt='%Y-%m-%dT%M:%H:%SZ',
-                        level=logging.DEBUG)
+    logging.basicConfig(
+        format='[%(asctime)s] [%(levelname)-8s] %(message)s [%(name)s:%(lineno)d]',
+        datefmt='%Y-%m-%dT%M:%H:%SZ',  # ISO 8601
+        level=logging.DEBUG)
     logging.Formatter.converter = time.gmtime  # UTC
 
     parser = argparse.ArgumentParser(prog=__package__,
@@ -63,7 +64,7 @@ def main() -> None:
             else:
                 logger.warning('No schema found to validate configuration file against')
 
-            logger.debug('Loaded configuration file: %s', config_path)
+            logger.info('Loaded configuration file: %s', config_path)
     except json.JSONDecodeError:
         sys.exit(f'Cannot parse non-JSON configuration file: {config_path}')
     except OSError:
@@ -77,7 +78,6 @@ def main() -> None:
     monitor_type = config['monitor'].get('type', 'rest')  # Optional
     monitor: watchdog.monitors.BaseMonitor
     if monitor_type == 'mqtt':
-        logger.debug('Setting up MQTT monitor')
         try:
             mqtt_connection = watchdog.connections.MqttConnection(**config['connections']['mqtt'])
         except KeyError:
@@ -86,7 +86,6 @@ def main() -> None:
             sys.exit(f'Invalid MQTT connection information in configuration file: {config_path}')
         monitor = watchdog.monitors.MqttMonitor(reloader, sensor_name, mqtt_connection)
     elif monitor_type == 'rest':
-        logger.debug('Setting up REST API monitor')
         monitor = watchdog.monitors.RestMonitor(reloader, sensor_name, home_assistant_connection)
     else:
         sys.exit(f'Unsupported monitor type in configuration file: {monitor_type}')

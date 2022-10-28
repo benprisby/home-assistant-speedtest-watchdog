@@ -10,14 +10,18 @@ import watchdog.connections
 import watchdog.reloader
 
 logger = logging.getLogger(__name__)
+logging.getLogger('urllib3').setLevel(logging.INFO)  # Lower-level of the requests module
 
 
 class BaseMonitor(metaclass=abc.ABCMeta):
 
     def __init__(self, reloader: watchdog.reloader.IntegrationReloader, sensor_name: str,
                  connection: watchdog.connections.BaseConnection) -> None:
+        if not sensor_name:
+            raise RuntimeError('Empty sensor name when trying to initialize monitor')
         if not connection.is_valid():
             raise RuntimeError('Invalid connection configuration for monitor')
+        logger.debug('Initializing monitor for sensor %s of type: %s', sensor_name, type(self).__name__)
 
         self.reloader = reloader
         self.sensor_name = sensor_name
@@ -28,10 +32,10 @@ class BaseMonitor(metaclass=abc.ABCMeta):
     def run(self, stop_signal: threading.Event) -> None:
         if stop_signal.is_set():
             raise RuntimeError('Stop signal already set when trying to run monitor')
-        logger.debug('Starting monitor')
+        logger.info('Starting monitor')
         self._start()
         stop_signal.wait()
-        logger.debug('Stopping monitor')
+        logger.info('Stopping monitor')
         self._stop()
         if self._backoff_timer is not None:
             self._backoff_timer.cancel()
@@ -72,16 +76,14 @@ class MqttMonitor(BaseMonitor):
         if self.connection.username and self.connection.password:
             self._mqtt_client.username_pw_set(self.connection.username, self.connection.password)
 
-        logger.debug('Initialized sensor monitor for %s on MQTT broker at: %s', self.sensor_name,
-                     self.connection.address)
-
     def _start(self) -> None:
         try:
             self._mqtt_client.connect(self.connection.address, self.connection.port)
         except socket.gaierror:
-            logger.warning('Failed to find MQTT broker at: %s', self.connection.address)
+            logger.warning('Failed to find MQTT broker at: %s:%d', self.connection.address, self.connection.port)
         except TimeoutError:
-            logger.warning('Timed out trying to connect to MQTT broker at: %s', self.connection.address)
+            logger.warning('Timed out trying to connect to MQTT broker at: %s:%d', self.connection.address,
+                           self.connection.port)
         self._mqtt_client.loop_start()
 
     def _stop(self) -> None:
@@ -91,7 +93,7 @@ class MqttMonitor(BaseMonitor):
     def _handle_connect(self, client: paho.mqtt.client.Client, flags: dict[str, typing.Any], user_data: None,
                         rc: int) -> None:
         del client, flags, user_data, rc  # Unused
-        logger.info('Connected to MQTT broker')
+        logger.info('Connected to MQTT broker at: %s:%d', self.connection.address, self.connection.port)
         self._mqtt_client.subscribe(f'homeassistant/sensor/{self.sensor_name}/state')
         logger.debug('Subscribed for sensor value')
 
@@ -116,6 +118,9 @@ class RestMonitor(BaseMonitor):
         super().__init__(reloader, sensor_name, connection)
         self.connection: watchdog.connections.HomeAssistantConnection
 
+        if poll_interval_seconds < 0:
+            raise RuntimeError(f'Invalid poll interval when trying to initialize monitor: {poll_interval_seconds}')
+
         self.poll_interval_seconds = poll_interval_seconds
         self._poll_timer: typing.Optional[threading.Timer] = None
 
@@ -124,10 +129,8 @@ class RestMonitor(BaseMonitor):
         self._headers = {'Authorization': f'Bearer {self.connection.api_token}'}
         self._verify_certificate = self.connection.verify_certificate
 
-        logger.debug('Initialized sensor monitor for %s on Home Assistant server at: %s', self.sensor_name,
-                     self.connection.address)
-
     def _start(self) -> None:
+        logger.debug('Starting polling Home Assistant server at: %s:%d', self.connection.address, self.connection.port)
         self._check_sensor()
 
     def _stop(self) -> None:
