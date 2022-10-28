@@ -121,6 +121,12 @@ when editing them.
 
 ## Running
 
+[Install Poetry](https://python-poetry.org/docs/#installation) and the required plugins:
+
+```shell
+poetry self add poetry-plugin-bundle "poetry-dynamic-versioning[plugin]"
+```
+
 Install the required packages:
 
 ```shell

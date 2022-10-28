@@ -33,6 +33,7 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(prog=__package__,
                                      description='Reload the Home Assistant Speedtest integration when it dies')
+    parser.add_argument('--version', action='version', version=watchdog.__version__)
     parser.add_argument('-c', '--config', metavar='<path>', help='Configuration file path')
     args = parser.parse_args()
 
