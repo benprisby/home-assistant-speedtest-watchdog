@@ -37,7 +37,7 @@ def main() -> None:
     parser.add_argument('-c', '--config', metavar='<path>', help='Configuration file path')
     args = parser.parse_args()
 
-    config_path = os.path.realpath(args.config) if args.config else os.path.join(os.getcwd(), 'config.json')
+    config_path = os.path.realpath(args.config) if args.config else os.path.realpath('config.json')  # Current directory
     config = {}
     try:
         with open(config_path, 'r', encoding='utf-8') as config_file:
