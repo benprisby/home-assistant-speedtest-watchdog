@@ -1,9 +1,22 @@
-# Home Assistant Speedtest.net Integration Watchdog
+# Home Assistant Speedtest.net Integration Watchdog <!-- omit in toc -->
 
 [![python](https://img.shields.io/badge/python-3.10-3776AB.svg?style=flat&logo=python&logoColor=white)](https://www.python.org)
 [![linting: pylint](https://img.shields.io/badge/linting-pylint-yellowgreen)](https://github.com/PyCQA/pylint)
 [![mypy: checked](https://img.shields.io/badge/mypy-checked-blue)](http://mypy-lang.org/)
 [![code style: yapf](https://img.shields.io/badge/code%20style-yapf-blue)](https://github.com/google/yapf)
+
+- [Overview](#overview)
+- [Monitor Types](#monitor-types)
+    - [MQTT (Preferred)](#mqtt-preferred)
+    - [REST API](#rest-api)
+- [Prerequisites](#prerequisites)
+    - [MQTT Setup](#mqtt-setup)
+    - [Home Assistant REST API Setup](#home-assistant-rest-api-setup)
+    - [Integration Entry ID](#integration-entry-id)
+- [Configuration File](#configuration-file)
+    - [`connections` Section](#connections-section)
+    - [`monitor` Section](#monitor-section)
+- [Running](#running)
 
 ## Overview
 
