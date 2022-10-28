@@ -86,7 +86,8 @@ def main() -> None:
             sys.exit(f'Invalid MQTT connection information in configuration file: {config_path}')
         monitor = watchdog.monitors.MqttMonitor(reloader, sensor_name, mqtt_connection)
     elif monitor_type == 'rest':
-        monitor = watchdog.monitors.RestMonitor(reloader, sensor_name, home_assistant_connection)
+        poll_interval = config['monitor'].get('poll_interval_seconds', 10)  # Optional
+        monitor = watchdog.monitors.RestMonitor(reloader, sensor_name, home_assistant_connection, poll_interval)
     else:
         sys.exit(f'Unsupported monitor type in configuration file: {monitor_type}')
 

@@ -87,6 +87,11 @@
                     "type": "string",
                     "description": "Speedtest integration entry ID",
                     "minLength": 1
+                },
+                "poll_interval_seconds": {
+                    "type": "number",
+                    "description": "Poll interval for REST API monitor",
+                    "minimum": 1
                 }
             },
             "required": [ "sensor_name", "config_entry_id" ]

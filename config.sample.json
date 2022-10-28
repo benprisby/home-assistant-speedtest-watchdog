@@ -17,6 +17,7 @@
     "monitor": {
         "type": "mqtt",
         "sensor_name": "speedtest_download",
-        "config_entry_id": "<id>"
+        "config_entry_id": "<id>",
+        "poll_interval_seconds": 10
     }
 }

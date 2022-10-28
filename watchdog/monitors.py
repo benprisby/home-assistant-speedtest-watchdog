@@ -130,7 +130,8 @@ class RestMonitor(BaseMonitor):
         self._verify_certificate = self.connection.verify_certificate
 
     def _start(self) -> None:
-        logger.debug('Starting polling Home Assistant server at: %s:%d', self.connection.address, self.connection.port)
+        logger.debug('Starting polling Home Assistant server at: %s:%d (%ds interval)', self.connection.address,
+                     self.connection.port, self.poll_interval_seconds)
         self._check_sensor()
 
     def _stop(self) -> None:
