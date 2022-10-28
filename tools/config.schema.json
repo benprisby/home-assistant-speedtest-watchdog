@@ -1,0 +1,88 @@
+{
+    "$schema": "https://json-schema.org/draft-07/schema",
+    "title": "Watchdog configuration",
+    "type": "object",
+    "properties": {
+        "connections": {
+            "type": "object",
+            "description": "Connection information",
+            "properties": {
+                "home_assistant": {
+                    "type": "object",
+                    "description": "Home Assistant server connection information",
+                    "properties": {
+                        "address": {
+                            "type": "string",
+                            "description": "Server IP address or hostname (not including the schema)"
+                        },
+                        "port": {
+                            "type": "integer",
+                            "description": "Server port",
+                            "minimum": 1,
+                            "maximum": 65535
+                        },
+                        "https": {
+                            "type": "boolean",
+                            "description": "Whether to connect to the server using HTTPS"
+                        },
+                        "verify_certificate": {
+                            "type": "boolean",
+                            "description": "If using HTTPS, whether or not certificate verification should be enforced"
+                        },
+                        "api_token": {
+                            "type": "string",
+                            "description": "REST API token (Long-Lived Access Token)"
+                        }
+                    },
+                    "required": [ "address", "api_token" ]
+                },
+                "mqtt": {
+                    "type": "object",
+                    "description": "MQTT broker connection information",
+                    "properties": {
+                        "address": {
+                            "type": "string",
+                            "description": "Broker IP address or hostname"
+                        },
+                        "port": {
+                            "type": "integer",
+                            "description": "Broker port",
+                            "minimum": 1,
+                            "maximum": 65535
+                        },
+                        "username": {
+                            "type": "string",
+                            "description": "Broker username (if required)"
+                        },
+                        "password": {
+                            "type": "string",
+                            "description": "Broker password (if required)"
+                        }
+                    },
+                    "required": [ "address" ]
+                }
+            },
+            "required": [ "home_assistant" ]
+        },
+        "monitor": {
+            "type": "object",
+            "description": "Monitor configuration",
+            "properties": {
+                "type": {
+                    "type": "string",
+                    "description": "Monitor type to use",
+                    "pattern": "^(mqtt|rest)$"
+                },
+                "sensor_name": {
+                    "type": "string",
+                    "description": "Speedtest sensor name to monitor"
+                },
+                "config_entry_id": {
+                    "type": "string",
+                    "description": "Speedtest integration entry ID"
+                }
+            },
+            "required": [ "type", "sensor_name", "config_entry_id" ]
+        }
+    }
+}

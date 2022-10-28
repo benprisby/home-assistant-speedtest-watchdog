@@ -91,6 +91,10 @@ Copy _config.sample.json_ to _config.json_ (which is in the _.gitignore_) and fi
 The file format is a JSON object organized into sections. Each section is a top-level property with an object under it.
 Dot notation is used to indicate nested heirarchies (e.g. `a.b` translates to `{"a":{"b":"<value>"}}`).
 
+A schema file has been created inside the _tools_ directory to validate both the _config.sample.json_ and _config.json_
+files (if created). A Visual Studio Code settings file has been checked in to enforce this schema against those files
+when editing them.
+
 ### `connections` Section
 
 | Property                            | Data Type | Description |
