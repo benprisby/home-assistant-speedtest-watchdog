@@ -70,13 +70,20 @@ def main() -> None:
         sys.exit(f'Failed to open configuration file: {config_path}')
 
     home_assistant_connection = watchdog.connections.HomeAssistantConnection(**config['connections']['home_assistant'])
+    if not home_assistant_connection.is_valid():
+        sys.exit(f'Invalid Home Assistant connection information in configuration file: {config_path}')
     reloader = watchdog.reloader.IntegrationReloader(home_assistant_connection, config['monitor']['config_entry_id'])
     sensor_name = config['monitor']['sensor_name']
-    monitor_type = config['monitor'].get('type', 'rest')
+    monitor_type = config['monitor'].get('type', 'rest')  # Optional
     monitor: watchdog.monitors.BaseMonitor
     if monitor_type == 'mqtt':
         logger.debug('Setting up MQTT monitor')
-        mqtt_connection = watchdog.connections.MqttConnection(**config['connections']['mqtt'])
+        try:
+            mqtt_connection = watchdog.connections.MqttConnection(**config['connections']['mqtt'])
+        except KeyError:
+            sys.exit(f'Missing MQTT connection object in configuration file: {config_path}')
+        if not mqtt_connection.is_valid():
+            sys.exit(f'Invalid MQTT connection information in configuration file: {config_path}')
         monitor = watchdog.monitors.MqttMonitor(reloader, sensor_name, mqtt_connection)
     elif monitor_type == 'rest':
         logger.debug('Setting up REST API monitor')

@@ -5,18 +5,18 @@
             "port": 8123,
             "https": true,
             "verify_certificate": true,
-            "api_token": ""
+            "api_token": "<token>"
         },
         "mqtt": {
             "address": "homeassistant.home",
             "port": 1883,
-            "username": "",
-            "password": ""
+            "username": "<username>",
+            "password": "<password>"
         }
     },
     "monitor": {
         "type": "mqtt",
         "sensor_name": "speedtest_download",
-        "config_entry_id": ""
+        "config_entry_id": "<id>"
     }
 }
