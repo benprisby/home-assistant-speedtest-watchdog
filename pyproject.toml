@@ -38,7 +38,10 @@ exclude = [
 ]
 
 [[tool.mypy.overrides]]
-module = "paho.*"
+module = [
+  "jsonschema",
+  "paho.*"
+]
 ignore_missing_imports = true
 
 [tool.yapf]
