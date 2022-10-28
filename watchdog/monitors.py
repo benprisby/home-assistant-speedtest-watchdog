@@ -1,3 +1,5 @@
+"""Monitors to read a Home Assistant sensor value and reload the integration if unavailable."""
+
 import abc
 import logging
 import paho.mqtt.client
@@ -14,6 +16,7 @@ logging.getLogger('urllib3').setLevel(logging.INFO)  # Lower-level of the reques
 
 
 class BaseMonitor(metaclass=abc.ABCMeta):
+    """Base class for a sensor monitor that reads its value and reloads the integration when it becomes unavailable."""
 
     def __init__(self, reloader: watchdog.reloader.IntegrationReloader, sensor_name: str,
                  connection: watchdog.connections.BaseConnection) -> None:
@@ -63,6 +66,7 @@ class BaseMonitor(metaclass=abc.ABCMeta):
 
 
 class MqttMonitor(BaseMonitor):
+    """Class that monitors a sensor by subscribing to a Home Assistant MQTT broker."""
 
     def __init__(self, reloader: watchdog.reloader.IntegrationReloader, sensor_name: str,
                  connection: watchdog.connections.MqttConnection) -> None:
@@ -109,6 +113,7 @@ class MqttMonitor(BaseMonitor):
 
 
 class RestMonitor(BaseMonitor):
+    """Class that monitors a sensor by polling a Home Assistant server using the REST API."""
 
     def __init__(self,
                  reloader: watchdog.reloader.IntegrationReloader,

@@ -1,3 +1,5 @@
+"""Main module responsible for executing the application."""
+
 import argparse
 import json
 import jsonschema

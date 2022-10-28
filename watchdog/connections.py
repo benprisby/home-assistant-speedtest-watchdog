@@ -1,3 +1,5 @@
+"""Data models for connection information."""
+
 import dataclasses
 
 

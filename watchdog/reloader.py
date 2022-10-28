@@ -1,3 +1,5 @@
+"""Home Assistant integration reloader."""
+
 import logging
 import requests
 
@@ -7,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 
 class IntegrationReloader:
+    """Class to handle making requests to a Home Assistant server to reload an integration using its entry ID."""
 
     def __init__(self, connection: watchdog.connections.HomeAssistantConnection, config_entry_id: str) -> None:
         if not connection.is_valid():
