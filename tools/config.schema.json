@@ -82,7 +82,7 @@
                     "description": "Speedtest integration entry ID"
                 }
             },
-            "required": [ "type", "sensor_name", "config_entry_id" ]
+            "required": [ "sensor_name", "config_entry_id" ]
         }
     }
 }

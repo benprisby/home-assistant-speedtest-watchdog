@@ -49,7 +49,7 @@ def main() -> None:
     home_assistant_connection = watchdog.connections.HomeAssistantConnection(**config['connections']['home_assistant'])
     reloader = watchdog.reloader.IntegrationReloader(home_assistant_connection, config['monitor']['config_entry_id'])
     sensor_name = config['monitor']['sensor_name']
-    monitor_type = config['monitor']['type']
+    monitor_type = config['monitor'].get('type', 'rest')
     monitor: watchdog.monitors.BaseMonitor
     if monitor_type == 'mqtt':
         logger.debug('Setting up MQTT monitor')

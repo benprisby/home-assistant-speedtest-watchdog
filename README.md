@@ -115,7 +115,7 @@ when editing them.
 
 | Property          | Data Type | Description |
 | ----------------- | --------- | ----------- |
-| `type`            | `string`  | Monitor type to use (`mqtt` or `rest`) |
+| `type`            | `string`  | Monitor type to use (`mqtt` or `rest`, optional, default: `rest`) |
 | `sensor_name`     | `string`  | Speedtest sensor name to monitor (e.g. `speedtest_download`) |
 | `config_entry_id` | `string`  | Speedtest integration entry ID collected above |
 
