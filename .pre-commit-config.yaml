@@ -1,5 +1,6 @@
 # This file introduces automated checks triggered on git commit events to inspect code quality.
 
+exclude: ^dist
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.3.0
@@ -42,4 +43,3 @@ repos:
   - repo: meta
     hooks:
       - id: check-hooks-apply
-      - id: check-useless-excludes
