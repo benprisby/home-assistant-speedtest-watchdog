@@ -48,7 +48,7 @@ mqtt_statestream:
   publish_timestamps: true
 ```
 
-The Statestream integration relies an [MQTT integration](https://www.home-assistant.io/integrations/mqtt/) to point it 
+The Statestream integration relies an [MQTT integration](https://www.home-assistant.io/integrations/mqtt/) to point it
 at a [broker](https://www.home-assistant.io/docs/mqtt/broker/). To keep things simple, I use the
 [Mosquitto add-on](https://github.com/home-assistant/addons/blob/master/mosquitto/DOCS.md) to run a broker locally on
 the Home Assistant server, but the application supports pointing at any arbitrary address.
