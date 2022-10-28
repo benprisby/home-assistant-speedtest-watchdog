@@ -61,7 +61,7 @@ class BaseMonitor(metaclass=abc.ABCMeta):
 class MqttMonitor(BaseMonitor):
 
     def __init__(self, reloader: watchdog.reloader.IntegrationReloader, sensor_name: str,
-                 connection: watchdog.connections.MqttConnection):
+                 connection: watchdog.connections.MqttConnection) -> None:
         super().__init__(reloader, sensor_name, connection)
         self.connection: watchdog.connections.MqttConnection
 
@@ -112,7 +112,7 @@ class RestMonitor(BaseMonitor):
                  reloader: watchdog.reloader.IntegrationReloader,
                  sensor_name: str,
                  connection: watchdog.connections.HomeAssistantConnection,
-                 poll_interval_seconds: int = 10):
+                 poll_interval_seconds: int = 10) -> None:
         super().__init__(reloader, sensor_name, connection)
         self.connection: watchdog.connections.HomeAssistantConnection
 
