@@ -44,21 +44,24 @@ def main() -> None:
             config = json.load(config_file)
 
             config_schema_filename = 'config.schema.json'
-            for config_schema_path in [
-                    os.path.join(os.path.dirname(__file__), config_schema_filename),
-                    os.path.join(os.getcwd(), 'tools', config_schema_filename)
-            ]:
-                if not os.path.exists(config_schema_path):
-                    continue
+            config_schema_path = next(
+                (
+                    path for path in [
+                        os.path.join(os.path.dirname(__file__), config_schema_filename),  # In module (preferred)
+                        os.path.join(os.getcwd(), 'tools', config_schema_filename)  # Repo location (fallback)
+                    ] if os.path.exists(path)),
+                '')
+            if config_schema_path:
                 with open(config_schema_path, 'r', encoding='utf-8') as config_schema_file:
                     config_schema = json.load(config_schema_file)
                     logger.debug('Checking configuration against schema: %s', config_schema_path)
                     try:
                         jsonschema.validate(config, config_schema)
                         logger.debug('Validated configuration file against schema')
-                        break
                     except jsonschema.ValidationError as exception:
                         sys.exit(f'Invalid configuration file: {config_path}\n\n{exception}')
+            else:
+                logger.warning('No schema found to validate configuration file against')
 
             logger.debug('Loaded configuration file: %s', config_path)
     except json.JSONDecodeError:
