@@ -30,7 +30,7 @@ def main() -> None:
 
     logging.basicConfig(
         format='[%(asctime)s] [%(levelname)-8s] %(message)s [%(name)s:%(lineno)d]',
-        datefmt='%Y-%m-%dT%M:%H:%SZ',  # ISO 8601
+        datefmt='%Y-%m-%dT%H:%M:%SZ',  # ISO 8601
         level=logging.DEBUG)
     logging.Formatter.converter = time.gmtime  # UTC
 
