@@ -152,13 +152,13 @@ poetry install
 Run the application:
 
 ```shell
-poetry run python -m watchdog <arguments>
+poetry run python -m bdp.homeassistant.speedtestwatchdog <arguments>
 ```
 
 For supported command line arguments, run:
 
 ```shell
-poetry run python -m watchdog --help
+poetry run python -m bdp.homeassistant.speedtestwatchdog --help
 ```
 
 ## Development
