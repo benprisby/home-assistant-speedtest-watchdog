@@ -3,9 +3,8 @@ ARG SOURCE_DIR=/usr/src
 FROM python:3.10-bullseye as build-stage
 
 ARG SOURCE_DIR
-ARG PATH="/root/.local/bin:${PATH}"
 
-RUN curl -sSL https://install.python-poetry.org | python3 - \
+RUN curl -sSL https://install.python-poetry.org | POETRY_HOME=/usr python3 - \
     && poetry self add "poetry-dynamic-versioning[plugin]" \
     && poetry config virtualenvs.in-project true
 
