@@ -47,14 +47,8 @@ def main() -> None:
             config = json.load(config_file)
 
             config_schema_filename = 'config.schema.json'
-            config_schema_path = next(
-                (
-                    path for path in [
-                        os.path.join(os.path.dirname(__file__), config_schema_filename),  # In module (preferred)
-                        os.path.join(os.getcwd(), 'tools', config_schema_filename)  # Repo location (fallback)
-                    ] if os.path.exists(path)),
-                '')
-            if config_schema_path:
+            config_schema_path = os.path.join(os.path.dirname(__file__), config_schema_filename)  # In module
+            if os.path.exists(config_schema_path):
                 with open(config_schema_path, 'r', encoding='utf-8') as config_schema_file:
                     config_schema = json.load(config_schema_file)
                     logger.debug('Checking configuration against schema: %s', config_schema_path)
