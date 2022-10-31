@@ -18,6 +18,7 @@
     - [`monitor` Section](#monitor-section)
 - [Running](#running)
 - [Development](#development)
+- [Deployment](#deployment)
 
 ## Overview
 
@@ -178,4 +179,26 @@ If desired, pre-commit hooks can be run manually:
 
 ```shell
 poetry run pre-commit run --all-files
+```
+
+## Deployment
+
+A Dockerfile has been provided that installs the required Poetry environment and then runs the application using a
+mapped configuration file:
+
+```shell
+docker build -t home-assistant-speedtest-watchdog .
+docker run -d --restart=on-failure --name home-assistant-speedtest-watchdog -v /path/to/config.json:/config.json home-assistant-speedtest-watchdog
+```
+
+Then, to stop the container:
+
+```shell
+docker stop home-assistant-speedtest-watchdog
+```
+
+Or to see log output:
+
+```shell
+docker logs home-assistant-speedtest-watchdog
 ```
