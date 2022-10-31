@@ -96,5 +96,6 @@
             },
             "required": [ "sensor_name", "config_entry_id" ]
         }
-    }
+    },
+    "required": [ "connections", "monitor" ]
 }
