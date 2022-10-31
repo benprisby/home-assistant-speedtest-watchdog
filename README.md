@@ -136,10 +136,10 @@ them.
 
 ## Running
 
-[Install Poetry](https://python-poetry.org/docs/#installation) and the required plugins:
+[Install Poetry](https://python-poetry.org/docs/#installation) and the required plugin:
 
 ```shell
-poetry self add poetry-plugin-bundle "poetry-dynamic-versioning[plugin]"
+poetry self add "poetry-dynamic-versioning[plugin]"
 ```
 
 Install the required packages:
