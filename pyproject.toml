@@ -1,10 +1,10 @@
 [tool.poetry]
-name = "home-assistant-speedtest-watchdog"
+name = "bdp-home-assistant-speedtest-watchdog"
 version = "0.0.0"
 description = "Watchdog to reload the Home Assistant Speedtest integration"
 authors = ["Ben Prisby <ben@benprisby.com>"]
 readme = "README.md"
-packages = [{include = "watchdog"}]
+packages = [{include = "bdp"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"

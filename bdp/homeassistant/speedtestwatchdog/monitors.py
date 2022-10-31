@@ -8,8 +8,8 @@ import socket
 import threading
 import typing
 
-import watchdog.connections
-import watchdog.reloader
+import bdp.homeassistant.speedtestwatchdog.connections
+import bdp.homeassistant.speedtestwatchdog.reloader
 
 logger = logging.getLogger(__name__)
 logging.getLogger('urllib3').setLevel(logging.INFO)  # Lower-level of the requests module
@@ -18,8 +18,8 @@ logging.getLogger('urllib3').setLevel(logging.INFO)  # Lower-level of the reques
 class BaseMonitor(metaclass=abc.ABCMeta):
     """Base class for a sensor monitor that reads its value and reloads the integration when it becomes unavailable."""
 
-    def __init__(self, reloader: watchdog.reloader.IntegrationReloader, sensor_name: str,
-                 connection: watchdog.connections.BaseConnection) -> None:
+    def __init__(self, reloader: bdp.homeassistant.speedtestwatchdog.reloader.IntegrationReloader, sensor_name: str,
+                 connection: bdp.homeassistant.speedtestwatchdog.connections.BaseConnection) -> None:
         if not sensor_name:
             raise RuntimeError('Empty sensor name when trying to initialize monitor')
         if not connection.is_valid():
@@ -68,10 +68,10 @@ class BaseMonitor(metaclass=abc.ABCMeta):
 class MqttMonitor(BaseMonitor):
     """Class that monitors a sensor by subscribing to a Home Assistant MQTT broker."""
 
-    def __init__(self, reloader: watchdog.reloader.IntegrationReloader, sensor_name: str,
-                 connection: watchdog.connections.MqttConnection) -> None:
+    def __init__(self, reloader: bdp.homeassistant.speedtestwatchdog.reloader.IntegrationReloader, sensor_name: str,
+                 connection: bdp.homeassistant.speedtestwatchdog.connections.MqttConnection) -> None:
         super().__init__(reloader, sensor_name, connection)
-        self.connection: watchdog.connections.MqttConnection
+        self.connection: bdp.homeassistant.speedtestwatchdog.connections.MqttConnection
 
         self._mqtt_client = paho.mqtt.client.Client('integration-monitor')
         self._mqtt_client.on_connect = self._handle_connect
@@ -116,12 +116,12 @@ class RestMonitor(BaseMonitor):
     """Class that monitors a sensor by polling a Home Assistant server using the REST API."""
 
     def __init__(self,
-                 reloader: watchdog.reloader.IntegrationReloader,
+                 reloader: bdp.homeassistant.speedtestwatchdog.reloader.IntegrationReloader,
                  sensor_name: str,
-                 connection: watchdog.connections.HomeAssistantConnection,
+                 connection: bdp.homeassistant.speedtestwatchdog.connections.HomeAssistantConnection,
                  poll_interval_seconds: int = 10) -> None:
         super().__init__(reloader, sensor_name, connection)
-        self.connection: watchdog.connections.HomeAssistantConnection
+        self.connection: bdp.homeassistant.speedtestwatchdog.connections.HomeAssistantConnection
 
         if poll_interval_seconds < 0:
             raise RuntimeError(f'Invalid poll interval when trying to initialize monitor: {poll_interval_seconds}')

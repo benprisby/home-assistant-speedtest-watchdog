@@ -10,9 +10,9 @@ import sys
 import threading
 import time
 
-import watchdog.connections
-import watchdog.monitors
-import watchdog.reloader
+import bdp.homeassistant.speedtestwatchdog.connections
+import bdp.homeassistant.speedtestwatchdog.monitors
+import bdp.homeassistant.speedtestwatchdog.reloader
 
 logger = logging.getLogger(__name__)
 stop_signal = threading.Event()
@@ -36,7 +36,7 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(prog=__package__,
                                      description='Reload the Home Assistant Speedtest integration when it dies')
-    parser.add_argument('--version', action='version', version=watchdog.__version__)
+    parser.add_argument('--version', action='version', version=bdp.homeassistant.speedtestwatchdog.__version__)
     parser.add_argument('-c', '--config', metavar='<path>', help='Configuration file path')
     args = parser.parse_args()
 
@@ -72,24 +72,28 @@ def main() -> None:
     except OSError:
         sys.exit(f'Failed to open configuration file: {config_path}')
 
-    home_assistant_connection = watchdog.connections.HomeAssistantConnection(**config['connections']['home_assistant'])
+    home_assistant_connection = bdp.homeassistant.speedtestwatchdog.connections.HomeAssistantConnection(
+        **config['connections']['home_assistant'])
     if not home_assistant_connection.is_valid():
         sys.exit(f'Invalid Home Assistant connection information in configuration file: {config_path}')
-    reloader = watchdog.reloader.IntegrationReloader(home_assistant_connection, config['monitor']['config_entry_id'])
+    reloader = bdp.homeassistant.speedtestwatchdog.reloader.IntegrationReloader(home_assistant_connection,
+                                                                                config['monitor']['config_entry_id'])
     sensor_name = config['monitor']['sensor_name']
     monitor_type = config['monitor'].get('type', 'rest')  # Optional
-    monitor: watchdog.monitors.BaseMonitor
+    monitor: bdp.homeassistant.speedtestwatchdog.monitors.BaseMonitor
     if monitor_type == 'mqtt':
         try:
-            mqtt_connection = watchdog.connections.MqttConnection(**config['connections']['mqtt'])
+            mqtt_connection = bdp.homeassistant.speedtestwatchdog.connections.MqttConnection(
+                **config['connections']['mqtt'])
         except KeyError:
             sys.exit(f'Missing MQTT connection object in configuration file: {config_path}')
         if not mqtt_connection.is_valid():
             sys.exit(f'Invalid MQTT connection information in configuration file: {config_path}')
-        monitor = watchdog.monitors.MqttMonitor(reloader, sensor_name, mqtt_connection)
+        monitor = bdp.homeassistant.speedtestwatchdog.monitors.MqttMonitor(reloader, sensor_name, mqtt_connection)
     elif monitor_type == 'rest':
         poll_interval = config['monitor'].get('poll_interval_seconds', 10)  # Optional
-        monitor = watchdog.monitors.RestMonitor(reloader, sensor_name, home_assistant_connection, poll_interval)
+        monitor = bdp.homeassistant.speedtestwatchdog.monitors.RestMonitor(reloader, sensor_name,
+                                                                           home_assistant_connection, poll_interval)
     else:
         sys.exit(f'Unsupported monitor type in configuration file: {monitor_type}')
 
