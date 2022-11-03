@@ -53,6 +53,7 @@ class BaseMonitor(metaclass=abc.ABCMeta):
 
     def _reload(self) -> None:
         if self._backoff_timer is None or self._backoff_timer.finished.is_set():
+            logger.debug('Reloading integration')
             if self.reloader.reload():
                 logger.info('Successfully reloaded integration')
                 logger.debug('Starting backoff timer')
