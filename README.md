@@ -188,7 +188,7 @@ mapped configuration file:
 
 ```shell
 docker build -t home-assistant-speedtest-watchdog .
-docker run -d --restart=on-failure --name home-assistant-speedtest-watchdog \
+docker run -d --restart=unless-stopped --name home-assistant-speedtest-watchdog \
     -v /path/to/config.json:/config.json home-assistant-speedtest-watchdog
 ```
 
