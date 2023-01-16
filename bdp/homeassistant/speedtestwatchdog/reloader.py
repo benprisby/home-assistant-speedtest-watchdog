@@ -35,5 +35,5 @@ class IntegrationReloader:
                                timeout=30) as response:
                 response.raise_for_status()
                 return True
-        except requests.exceptions.HTTPError:
+        except (requests.exceptions.ConnectionError, requests.exceptions.HTTPError, requests.exceptions.Timeout):
             return False

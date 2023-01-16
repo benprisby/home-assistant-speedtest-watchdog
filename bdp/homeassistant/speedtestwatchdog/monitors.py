@@ -151,6 +151,8 @@ class RestMonitor(BaseMonitor):
                 response.raise_for_status()
                 if response.json()['state'] == 'unavailable':
                     self._reload()
+        except (requests.exceptions.ConnectionError, requests.exceptions.Timeout):
+            logger.warning('Server not available')
         except requests.exceptions.HTTPError:
             logger.warning('Failed to get sensor value')
 
